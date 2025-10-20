@@ -1,6 +1,7 @@
 """Application to host the merge feed."""
 
-from datetime import UTC, datetime
+import datetime
+import time
 
 import cachetools
 import feedparser
@@ -31,8 +32,7 @@ def _set_feed_data(
             title=link.get('title', 'Acast Feed'),
         )
     patreon_link = next(
-        (link for link in patreon_data['links'] if link.get('rel') == 'self'),
-        None
+        (link for link in patreon_data['links'] if link.get('rel') == 'self'), None
     )
     if patreon_link:
         merged_feed.link(
@@ -76,7 +76,7 @@ def _set_feed_data(
         name=author_detail.get('name'), email=author_detail.get('email')
     )
 
-    merged_feed.lastBuildDate(datetime.now(UTC))
+    merged_feed.lastBuildDate(datetime.datetime.now(datetime.UTC))
 
 
 def _set_feed_entry_data(fe: FeedEntry, entry: dict, number: int) -> None:
@@ -134,13 +134,16 @@ def generate_merged_feed(patreon_auth_token: str) -> FeedGenerator:
     _set_feed_data(merged_feed, acast_feed['feed'], patreon_feed['feed'])
 
     raw_entries = acast_feed.get('entries', []) + patreon_feed.get('entries', [])
-    raw_entries.sort(key=lambda x: x['published_parsed'])
+    raw_entries.sort(
+        key=lambda x: x.get('published_parsed', time.strptime('1970', '%Y'))
+    )
 
     for i, entry in enumerate(raw_entries, start=1):
         fe = merged_feed.add_entry(order='append')
         _set_feed_entry_data(fe, entry, i)
 
     return merged_feed
+
 
 app = FastAPI(
     title='Erdbeerkäse Feed Merger',

@@ -73,7 +73,7 @@ wheels = [
 ]
 
 [[package]]
-name = "erdberkaese-feed-merger"
+name = "erdberkaese-one-feed"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
