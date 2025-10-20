@@ -6,7 +6,7 @@ A Python application that merges the RSS feeds for the podcast [Erdbeerkäse](ht
 
 The problem is that you currently have to follow two feeds in your podcast app. The one from [acast](https://shows.acast.com/erdbeerkaesepodcast) which is generally available through podcast libraries and the one you get if you subscribe to the [patreon](https://www.patreon.com/erdbeerkaese).
 
-## How
+## How?
 
 This app provides a server that requests both feeds and merges them into one feed and provides it via two endpoints `/rss` and `/atom`. You need to provie your `patrean auth key` as url parameter to the endpoints, e.g. `/rss?auth=<patreon-auth-key>` or `/atom?auth=<patreon-auth-key>`.
 
@@ -20,10 +20,10 @@ The application is automatically built and published to GitHub Container Registr
 
 ```bash
 # Pull the latest image
-docker pull ghcr.io/your-username/erdbeerkaese_one_feed:latest
+docker pull ghcr.io/leon1995/erdbeerkaese_one_feed:latest
 
 # Run the container
-docker run -p 8000:8000 ghcr.io/your-username/erdbeerkaese_one_feed:latest
+docker run -p 8000:8000 ghcr.io/leon1995/erdbeerkaese_one_feed:latest
 
 # Access the API
 curl "http://localhost:8000/rss?auth=your_patreon_token"
