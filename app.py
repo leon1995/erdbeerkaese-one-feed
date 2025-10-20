@@ -22,7 +22,7 @@ def _set_feed_data(
     merged_feed.title(acast_data['title'])
     merged_feed.description(acast_data['summary'])
 
-    for link in acast_data.get('links'):
+    for link in acast_data.get('links', []):
         merged_feed.link(
             rel=link.get('rel'),
             href=link.get('href'),
@@ -31,14 +31,16 @@ def _set_feed_data(
             title=link.get('title', 'Acast Feed'),
         )
     patreon_link = next(
-        link for link in patreon_data['links'] if link.get('rel') == 'self'
+        (link for link in patreon_data['links'] if link.get('rel') == 'self'),
+        None
     )
-    merged_feed.link(
-        rel='related',
-        href=patreon_link['href'],
-        type='application/rss+xml',
-        title='Patreon Feed',
-    )
+    if patreon_link:
+        merged_feed.link(
+            rel='related',
+            href=patreon_link['href'],
+            type='application/rss+xml',
+            title='Patreon Feed',
+        )
 
     merged_feed.language(acast_data['language'])
     merged_feed.rights(acast_data['rights'])
@@ -57,7 +59,7 @@ def _set_feed_data(
         url=image.get('href'), title=image.get('title'), link=image.get('link')
     )
 
-    for tag in acast_data.get('tags'):
+    for tag in acast_data.get('tags', []):
         merged_feed.category(
             term=tag.get('term'), scheme=tag.get('scheme'), label=tag.get('label')
         )
@@ -132,7 +134,7 @@ def generate_merged_feed(patreon_auth_token: str) -> FeedGenerator:
     _set_feed_data(merged_feed, acast_feed['feed'], patreon_feed['feed'])
 
     raw_entries = acast_feed.get('entries', []) + patreon_feed.get('entries', [])
-    raw_entries.sort(key=lambda x: x.get('published_parsed', x.get('published')))
+    raw_entries.sort(key=lambda x: x['published_parsed'])
 
     for i, entry in enumerate(raw_entries, start=1):
         fe = merged_feed.add_entry(order='append')
@@ -182,10 +184,10 @@ async def atom(auth: str) -> Response:
         feed_content = generate_merged_feed(auth).atom_str()
         return Response(
             content=feed_content,
-            media_type='application/rss+xml',
+            media_type='application/atom+xml',
             headers={
                 'Cache-Control': f'public, max-age={__CACHE_TTL__}',
-                'Content-Type': 'application/rss+xml; charset=utf-8',
+                'Content-Type': 'application/atom+xml; charset=utf-8',
             },
         )
     except HTTPException:
