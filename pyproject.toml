@@ -1,0 +1,47 @@
+[project]
+name = "erdberkaese-one-feed"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.119.0",
+    "uvicorn>=0.30.0",
+    "feedgen>=1.0.0",
+    "feedparser>=6.0.12",
+    "cachetools>=6.2.1",
+]
+
+[dependency-groups]
+test = [
+    "pytest>=8.4.2",
+]
+dev = [
+    { include-group = "test" },
+    "ruff>=0.14.1",
+    "pre-commit>=3.8.0",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]  # https://docs.astral.sh/ruff/settings/#select
+extend-ignore = [# https://docs.astral.sh/ruff/settings/#extend-ignore
+    "COM812", # missing-trailing-comma
+    "D203", # one-blank-line-before-class
+    "D213", # multi-line-summary-second-line
+    "S101", # https://docs.astral.sh/ruff/rules/assert/
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 120 # https://docs.astral.sh/ruff/settings/#max-doc-length
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["D104"]
+
+[tool.pytest.ini_options]
+testpaths = "tests/"
