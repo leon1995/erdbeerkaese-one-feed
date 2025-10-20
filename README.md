@@ -1,6 +1,6 @@
 # Erdbeerkäse Feed Merger
 
-A Python application that merges the RSS feeds for the podcast [Erdberkäse](https://shows.acast.com/erdbeerkaesepodcast) from Acast and Patreon into a single RSS feed.
+A Python application that merges the RSS feeds for the podcast [Erdbeerkäse](https://shows.acast.com/erdbeerkaesepodcast) from Acast and Patreon into a single RSS feed.
 
 ## Why?
 
@@ -20,10 +20,10 @@ The application is automatically built and published to GitHub Container Registr
 
 ```bash
 # Pull the latest image
-docker pull ghcr.io/your-username/erdberkaese_one_feed:latest
+docker pull ghcr.io/your-username/erdbeerkaese_one_feed:latest
 
 # Run the container
-docker run -p 8000:8000 ghcr.io/your-username/erdberkaese_one_feed:latest
+docker run -p 8000:8000 ghcr.io/your-username/erdbeerkaese_one_feed:latest
 
 # Access the API
 curl "http://localhost:8000/rss?auth=your_patreon_token"
