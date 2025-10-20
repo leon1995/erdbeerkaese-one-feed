@@ -1,4 +1,4 @@
-# Erdbeerkäse Feed Merger
+# Erdbeerkäse One Feed
 
 A Python application that merges the RSS feeds for the podcast [Erdbeerkäse](https://shows.acast.com/erdbeerkaesepodcast) from Acast and Patreon into a single RSS feed.
 
