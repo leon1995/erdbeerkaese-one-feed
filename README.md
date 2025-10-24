@@ -34,5 +34,3 @@ curl "http://localhost:8000/atom?auth=your_patreon_token"
 
 1. Install dependencies `uv sync --dev --frozen`
 2. run web server with `uv run uvicorn app:app`
-
-
